@@ -3,6 +3,75 @@ var score = 0;
 var rows = 4;
 var columns = 4;
 
+const bgMusic = document.getElementById('bgMusic');
+const toggleMusic = document.getElementById('toggleMusic');
+let isMusicPlaying = false;
+
+// Function to handle music toggle
+function toggleBackgroundMusic() {
+    if (isMusicPlaying) {
+        bgMusic.pause();
+        toggleMusic.textContent = '🔈';
+    } else {
+        bgMusic.play().catch(error => {
+            console.log("Audio playback failed:", error);
+        });
+        toggleMusic.textContent = '🔊';
+    }
+    isMusicPlaying = !isMusicPlaying;
+}
+
+// Function to start music
+async function startMusic() {
+    try {
+        await bgMusic.play();
+        isMusicPlaying = true;
+        toggleMusic.textContent = '🔊';
+    } catch (error) {
+        console.log("Autoplay failed, waiting for user interaction:", error);
+    }
+}
+
+// Add click event listener to the music toggle button
+toggleMusic.addEventListener('click', toggleBackgroundMusic);
+
+// Modified window.onload function
+window.onload = function() {
+    setGame();
+    
+    // Try to autoplay immediately
+    startMusic();
+    
+    // Fallback for browsers that block autoplay
+    document.addEventListener('click', function initAudio() {
+        if (!isMusicPlaying) {
+            startMusic();
+        }
+        document.removeEventListener('click', initAudio);
+    }, { once: true });
+
+    // Additional fallback for mobile devices
+    document.addEventListener('touchstart', function initAudio() {
+        if (!isMusicPlaying) {
+            startMusic();
+        }
+        document.removeEventListener('touchstart', initAudio);
+    }, { once: true });
+}
+
+// Optional: Add visibility change handling to pause/resume music when tab is hidden/visible
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        if (isMusicPlaying) {
+            bgMusic.pause();
+        }
+    } else {
+        if (isMusicPlaying) {
+            bgMusic.play().catch(error => console.log("Resume playback failed:", error));
+        }
+    }
+});
+
 window.onload = function() {
     setGame();
 }
@@ -216,3 +285,4 @@ function hasEmptyTile() {
     }
     return false;
 }
+
