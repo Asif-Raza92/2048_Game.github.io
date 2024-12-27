@@ -2,6 +2,8 @@
  
 # 2048 Game with Beautiful Animated Background
 
+Disclaimer : This project is made with the help of Tutorial and I add some features and changed its User interface also take help of Ai to solve only error in projects.
+
 A modern implementation of the classic 2048 game featuring a stunning animated background with aurora effects and floating particles. This project combines engaging gameplay with aesthetic visual elements to create an immersive gaming experience.
 
 ## 🎮 Game Features
